@@ -30,7 +30,7 @@ struct Constants {
     
     // MARK: TMDB Parameter Values
     struct TMDBParameterValues {
-        static let ApiKey = "4e8bdccc3bb63cefbec21f936eca5651"
+        static let ApiKey = "d0e8a57a844e0900aa1ae7c08a1c3ad2"
     }
     
     // MARK: TMDB Response Keys
@@ -57,9 +57,9 @@ struct Constants {
     
     // MARK: Selectors
     struct Selectors {
-        static let KeyboardWillShow: Selector = "keyboardWillShow:"
-        static let KeyboardWillHide: Selector = "keyboardWillHide:"
-        static let KeyboardDidShow: Selector = "keyboardDidShow:"
-        static let KeyboardDidHide: Selector = "keyboardDidHide:"
+        static let KeyboardWillShow: Selector = Selector("keyboardWillShow:")
+        static let KeyboardWillHide: Selector = Selector("keyboardWillHide:")
+        static let KeyboardDidShow: Selector = Selector("keyboardDidShow:")
+        static let KeyboardDidHide: Selector = Selector("keyboardDidHide:")
     }
 }
