@@ -212,10 +212,9 @@ class LoginViewController: UIViewController {
                 displayError("Couldn't parse the \(Constants.TMDBResponseKeys.Success) as a string in: \(parsedResult)")
                 return
             }
-            print(success)
-            
-            /* 6. Use the data! */
-            //            self.appDelegate.requestToken = requestToken
+            if success {
+                self.getSessionID(self.appDelegate.requestToken!)
+            }
         }
         
         /* 7. Start the request */
@@ -225,6 +224,63 @@ class LoginViewController: UIViewController {
     private func getSessionID(requestToken: String) {
         
         /* TASK: Get a request token, then store it (appDelegate.requestToken) and login with the token */
+        /* 1. Set the parameters */
+        let methodParameters = [
+            Constants.TMDBParameterKeys.ApiKey: Constants.TMDBParameterValues.ApiKey,
+            Constants.TMDBParameterKeys.RequestToken: requestToken
+        ]
+        
+        /* 2/3. Build the URL, Configure the request */
+        let request = NSURLRequest(URL: appDelegate.tmdbURLFromParameters(methodParameters, withPathExtension: "/authentication/guest_session/new"))
+        
+        /* 4. Make the request */
+        let task = appDelegate.sharedSession.dataTaskWithRequest(request) { (data, response, error) in
+            
+            func displayError(error: String) {
+                print(error)
+                performUIUpdatesOnMain {
+                    self.setUIEnabled(true)
+                    self.debugTextLabel.text = "Login Failed (Request Token)"
+                }
+            }
+            // checking if there's any error
+            guard error == nil else {
+                displayError("there were error with your request: \(error))")
+                return
+            }
+            
+            // checking status code 2xx
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode
+                where statusCode >= 200 && statusCode <= 299 else {
+                    print("response code isn't 2xx")
+                    return
+            }
+            
+            guard let data = data else {
+                displayError("No data was returned by the request!")
+                return
+            }
+            /* 5. Parse the data */
+            
+            var parsedResult: AnyObject!
+            do {
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            } catch {
+                displayError("Couldn't parse the data as a json: \(data)")
+                return
+            }
+            
+            guard let sessionID = parsedResult[Constants.TMDBResponseKeys.SessionID] as? String else {
+                displayError("Couldn't parse the \(Constants.TMDBResponseKeys.SessionID) as a string in: \(parsedResult)")
+                return
+            }
+            /* 6. Use the data! */
+            self.appDelegate.sessionID = sessionID
+            
+        }
+        
+        /* 7. Start the request */
+        task.resume()
         
     }
     
