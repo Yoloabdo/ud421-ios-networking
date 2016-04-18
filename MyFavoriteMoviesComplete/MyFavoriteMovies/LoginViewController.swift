@@ -305,6 +305,7 @@ class LoginViewController: UIViewController {
     
     private func getUserID(sessionID: String) {
         
+        
         /* TASK: Get the user's ID, then store it (appDelegate.userID) for future use and go to next view! */
         
         /* 1. Set the parameters */
@@ -375,6 +376,7 @@ class LoginViewController: UIViewController {
         /* 7. Start the request */
         task.resume()
     }
+
 }
 
 // MARK: - LoginViewController: UITextFieldDelegate
