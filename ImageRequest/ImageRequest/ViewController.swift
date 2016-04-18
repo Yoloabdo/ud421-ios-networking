@@ -21,6 +21,29 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: Add all the networking code here!
+        let link = "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg"
+        
+        guard let imageURL = NSURL(string: link) else {
+            print("couldn't parse URL")
+            return
+        }
+        
+
+        let task = NSURLSession.sharedSession().dataTaskWithURL(imageURL) {
+            (data, response, error) in
+            
+            guard let data = data else {
+                print("Error loading data from web")
+                return
+            }
+            performUIUpdatesOnMain {
+                self.imageView.image = UIImage(data: data)
+            }
+            
+        }
+        
+    
+        task.resume()
+        
     }
 }
