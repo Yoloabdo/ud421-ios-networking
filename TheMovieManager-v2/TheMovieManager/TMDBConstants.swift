@@ -33,6 +33,10 @@ extension TMDBClient {
         static let AccountIDWatchlistMovies = "/account/{id}/watchlist/movies"
         static let AccountIDWatchlist = "/account/{id}/watchlist"
         
+//        bonus
+        static let MovieRate = "/movie/{id}/account_states"
+        
+        
         // MARK: Authentication
         static let AuthenticationTokenNew = "/authentication/token/new"
         static let AuthenticationSessionNew = "/authentication/session/new"
@@ -94,6 +98,11 @@ extension TMDBClient {
         static let MovieReleaseDate = "release_date"
         static let MovieReleaseYear = "release_year"
         static let MovieResults = "results"
+        
+        //MARK: Rate
+        
+        static let MovieRate = "rated"
+        static let MovieRateValue = "value"
         
     }
     
