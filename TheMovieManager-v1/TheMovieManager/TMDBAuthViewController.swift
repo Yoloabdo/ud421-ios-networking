@@ -64,7 +64,7 @@ extension TMDBAuthViewController: UIWebViewDelegate {
                 self.completionHandlerForView!(success: true, errorString: nil)
             }
         }else{
-            print("not matching")
+            self.completionHandlerForView!(success: false, errorString: "Error authentcation")
         }
     }
 }
