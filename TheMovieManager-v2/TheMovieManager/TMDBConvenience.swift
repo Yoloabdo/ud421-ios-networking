@@ -213,58 +213,26 @@ extension TMDBClient {
         }
     }
     
-    func getWatchlistMovies(completionHandlerForWatchlist: (result: [TMDBMovie]?, error: NSError?) -> Void) {
-        
-        
+    
+    func getMoviesForSearchString(searchString: String, completionHandlerForMovies: (result: [TMDBMovie]?, error: NSError?) -> Void) -> NSURLSessionDataTask? {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
-        let parameters = [TMDBClient.ParameterKeys.SessionID: TMDBClient.sharedInstance().sessionID!]
-        var mutableMethod: String = Methods.AccountIDWatchlistMovies
-        mutableMethod = subtituteKeyInMethod(mutableMethod, key: TMDBClient.URLKeys.UserID, value: String(TMDBClient.sharedInstance().userID!))!
+        let parameters = [TMDBClient.ParameterKeys.Query: searchString]
         
         /* 2. Make the request */
-        taskForGETMethod(mutableMethod, parameters: parameters) { (results, error) in
-            
-            /* 3. Send the desired value(s) to completion handler */
-            if let error = error {
-                completionHandlerForWatchlist(result: nil, error: error)
-            } else {
-                
-                if let results = results[TMDBClient.JSONResponseKeys.MovieResults] as? [[String:AnyObject]] {
-                    
-                    let movies = TMDBMovie.moviesFromResults(results)
-                    completionHandlerForWatchlist(result: movies, error: nil)
-                } else {
-                    completionHandlerForWatchlist(result: nil, error: NSError(domain: "getWatchList parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getWatchList"]))
-                }
-            }
-        }
-    }
-    
-
-    
-    func getMovieRate(Movie: TMDBMovie, completionHandlerForMovies: (result: String?, error: NSError?) -> Void) -> NSURLSessionDataTask? {
-        
-        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
-        let parameters = [TMDBClient.ParameterKeys.SessionID: TMDBClient.sharedInstance().sessionID!]
-        
-        var mutableMethod: String = Methods.MovieRate
-        mutableMethod = subtituteKeyInMethod(mutableMethod, key: TMDBClient.URLKeys.UserID, value: String(TMDBClient.sharedInstance().userID!))!
-        
-        /* 2. Make the request */
-        let task = taskForGETMethod(mutableMethod, parameters: parameters) { (results, error) in
+        let task = taskForGETMethod(Methods.SearchMovie, parameters: parameters) { (results, error) in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
                 completionHandlerForMovies(result: nil, error: error)
             } else {
                 
-                if let results = results[TMDBClient.JSONResponseKeys.MovieRate] as? [String:AnyObject] {
+                if let results = results[TMDBClient.JSONResponseKeys.MovieResults] as? [[String:AnyObject]] {
                     
-                    guard let rate = results[TMDBClient.JSONResponseKeys.MovieRateValue] as? String else { return }
-                    completionHandlerForMovies(result: rate, error: nil)
+                    let movies = TMDBMovie.moviesFromResults(results)
+                    completionHandlerForMovies(result: movies, error: nil)
                 } else {
-                    completionHandlerForMovies(result: nil, error: NSError(domain: "getMovieRate parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getMovieRate"]))
+                    completionHandlerForMovies(result: nil, error: NSError(domain: "getMoviesForSearchString parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getMoviesForSearchString"]))
                 }
             }
         }
@@ -343,4 +311,33 @@ extension TMDBClient {
 
         }
     }
+    
+    // Bonus get movie rate
+    func getMovieRate(movie: TMDBMovie, completionHandlerForMovieRate: (result: String?, error: NSError?) -> Void) {
+        
+        
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let parameters = [TMDBClient.ParameterKeys.SessionID: TMDBClient.sharedInstance().sessionID!]
+        
+        var mutableMethod: String = Methods.MovieRate
+        mutableMethod = subtituteKeyInMethod(mutableMethod, key: TMDBClient.URLKeys.UserID, value: String(movie.id))!
+        
+        /* 2. Make the request */
+        taskForGETMethod(mutableMethod, parameters: parameters) { (results, error) in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandlerForMovieRate(result: nil, error: error)
+            } else {
+                if let results = results[TMDBClient.JSONResponseKeys.MovieRate] as? Int {
+                    
+                    completionHandlerForMovieRate(result: "\(results)", error: nil)
+                } else {
+                    completionHandlerForMovieRate(result: nil, error: NSError(domain: "getMovieRate parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getMovieRate"]))
+                }
+            }
+        }
+    }
+    
 }

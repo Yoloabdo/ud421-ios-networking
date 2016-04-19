@@ -18,8 +18,10 @@ class MovieDetailViewController: UIViewController {
     var isFavorite = false
     var isWatchlist = false
     
-    // MARK: Outlets
     
+    // MARK: Outlets
+
+    @IBOutlet weak var movieRateLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var toggleFavoriteButton: UIBarButtonItem!
@@ -110,6 +112,18 @@ class MovieDetailViewController: UIViewController {
             } else {
                 activityIndicator.alpha = 0.0
                 activityIndicator.stopAnimating()
+            }
+        }
+        
+        // get the movie rate that user did earlier, 0 if not
+        let rate = TMDBClient.sharedInstance().getMovieRate(movie!) { (result, error) in
+            
+            if error == nil {
+                performUIUpdatesOnMain({ 
+                    self.movieRateLabel.text = result ?? "not rated"
+                })
+            }else {
+                print(error)
             }
         }
     }
