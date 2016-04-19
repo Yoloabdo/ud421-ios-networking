@@ -9,6 +9,7 @@
 import UIKit
 
 // MARK: - TMDBAuthViewController: UIViewController
+// pass: q6y-Eyx-kho-eys
 
 class TMDBAuthViewController: UIViewController {
 
@@ -52,5 +53,18 @@ class TMDBAuthViewController: UIViewController {
 
 extension TMDBAuthViewController: UIWebViewDelegate {
     
+   
     // TODO: Add implementation here
+    func webViewDidFinishLoad(webView: UIWebView) {
+        let authURL = TMDBClient.Constants.AuthorizationURL, token = requestToken!
+        
+        if webView.request?.URL?.absoluteString == "\(authURL)\(token)/allow" {
+            print("match")
+            dismissViewControllerAnimated(true) {
+                self.completionHandlerForView!(success: true, errorString: nil)
+            }
+        }else{
+            print("not matching")
+        }
+    }
 }

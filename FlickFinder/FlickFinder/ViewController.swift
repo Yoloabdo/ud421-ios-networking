@@ -15,7 +15,8 @@ class ViewController: UIViewController {
     // MARK: Properties
     
     var keyboardOnScreen = false
-    
+    let center = NSNotificationCenter.defaultCenter()
+
     // MARK: Outlets
     
     @IBOutlet weak var photoImageView: UIImageView!
@@ -38,6 +39,18 @@ class ViewController: UIViewController {
         subscribeToNotification(UIKeyboardWillHideNotification, selector: #selector(keyboardWillHide))
         subscribeToNotification(UIKeyboardDidShowNotification, selector: #selector(keyboardDidShow))
         subscribeToNotification(UIKeyboardDidHideNotification, selector: #selector(keyboardDidHide))
+//        UIScreenBrightnessDidChangeNotification
+        
+        center.addObserverForName(UIScreenBrightnessDidChangeNotification, object: nil, queue: nil) { notification in
+            print("\(notification.name): \(UIScreen.mainScreen().brightness) ?? [:])")
+        }
+        
+        print(UIDevice.currentDevice().model)
+    }
+    
+    deinit {
+    
+        center.removeObserver(UIScreenBrightnessDidChangeNotification)
     }
     
     override func viewWillDisappear(animated: Bool) {
