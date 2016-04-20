@@ -104,7 +104,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="9.3/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNm-MH-Wb1">
                                 <rect key="frame" x="107" y="564" width="55" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -353,13 +353,26 @@
                                             <action selector="loginPressed:" destination="72f-zb-tFC" eventType="touchUpInside" id="V0h-Am-6k2"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7qM-E5-fqC" customClass="FBSDKLoginButton">
+                                        <rect key="frame" x="0.0" y="214" width="560" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="vwl-Gb-Fdn"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Np-P3-PqF">
-                                        <rect key="frame" x="0.0" y="214" width="560" height="313"/>
+                                        <rect key="frame" x="0.0" y="268" width="560" height="259"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="7qM-E5-fqC" secondAttribute="trailing" id="0xx-eT-Vgd"/>
+                                    <constraint firstItem="7qM-E5-fqC" firstAttribute="top" secondItem="PGO-lE-WFI" secondAttribute="bottom" constant="10" id="MKu-wh-pKZ"/>
+                                    <constraint firstItem="7qM-E5-fqC" firstAttribute="leading" secondItem="Qpz-rr-ekX" secondAttribute="leading" id="WLA-vG-uGl"/>
+                                    <constraint firstItem="1Np-P3-PqF" firstAttribute="top" secondItem="7qM-E5-fqC" secondAttribute="bottom" constant="10" id="XtT-Jz-ZBk"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.35070900710000003" green="0.79530321839999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -376,6 +389,7 @@
                     </view>
                     <connections>
                         <outlet property="debugTextLabel" destination="1Np-P3-PqF" id="o6s-Ix-2ud"/>
+                        <outlet property="fbLoginBtn" destination="7qM-E5-fqC" id="pAD-TK-ah7"/>
                         <outlet property="loginButton" destination="PGO-lE-WFI" id="cde-06-1ax"/>
                     </connections>
                 </viewController>

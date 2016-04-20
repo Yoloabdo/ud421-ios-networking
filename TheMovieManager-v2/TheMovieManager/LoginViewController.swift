@@ -7,25 +7,41 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 
 // MARK: - LoginViewController: UIViewController
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     // MARK: Properties
     
     @IBOutlet weak var debugTextLabel: UILabel!
     @IBOutlet weak var loginButton: BorderedButton!
+    @IBOutlet weak var fbLoginBtn: FBSDKLoginButton!
     
     var session: NSURLSession!
+
     
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackground()
+        
+     
+        fbLoginBtn?.readPermissions = ["public_profile", "email"]
+//        fbLoginbtn?.delegate = self
+        
+        //
+        
     }
     
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        
+    }
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        
+    }
     override func viewDidAppear(animated: Bool) {
         super.viewWillAppear(animated)
         debugTextLabel.text = ""
@@ -45,6 +61,12 @@ class LoginViewController: UIViewController {
         }
     }
     
+    @IBAction func loginViaFB(sender: UIButton) {
+        
+        
+        
+        
+    }
     // MARK: Login
     
     private func completeLogin() {
